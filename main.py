@@ -6,7 +6,7 @@ from openai import OpenAI
 import prompts
 
 # OpenAI API
-client = OpenAI(api_key="sk-proj-CwHlMlNZ37HpoSr03bzbT3BlbkFJG0qd6VYML8Gq4Fpionmw")
+client = OpenAI(api_key="")
 model = "gpt-3.5-turbo"
 temeperature = 0.4
 max_tokens = 1
@@ -38,14 +38,18 @@ st.title('Terraform Code Generator')
 col1, col2, col3 = st.columns([2, 5, 3])
 
 #user input
+# Python
 with col1:
     user_input = st.text_area('Enter your terraform code here:', height=200)
+    if st.button('Generate Terraform Code'):
+        completion = get_code(user_input)
+        st.write('Chatbot Response:')
+        st.code(completion, language='hcl')
 
 #chatbot response
 with col2:
-    if st.button('Generate Terraform Code'):
-        completion = get_code(user_input)
-        st.write(completion)
+    st.write('Chatbot Response:')
+    # st.write(completion)
 
 #dropdown lists
 
