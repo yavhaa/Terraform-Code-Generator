@@ -7,7 +7,7 @@ To install the Terraform Code Generator, follow these steps:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your-username/terraform-code-generator.git
+   git clone https://github.com/yavhaa/terraform-code-generator.git
    ```
 
 2. Navigate to the project directory:
