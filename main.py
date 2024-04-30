@@ -39,17 +39,17 @@ col1, col2, col3 = st.columns([2, 5, 3])
 
 #user input
 # Python
+with col2:
+    st.write("Chatbot Response:")
 with col1:
-    user_input = st.text_area('Enter your terraform code here:', height=200)
+    user_input = st.text_input('Enter your terraform code here:')
     if st.button('Generate Terraform Code'):
         completion = get_code(user_input)
-        st.write('Chatbot Response:')
-        st.code(completion, language='hcl')
+        with col2:
+            st.write('Chatbot Response:')
+            st.code(completion, language='hcl')
 
-#chatbot response
-with col2:
-    st.write('Chatbot Response:')
-    # st.write(completion)
+
 
 #dropdown lists
 
