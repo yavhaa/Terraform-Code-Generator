@@ -3,7 +3,7 @@ import pandas as pd
 import os 
 import json 
 from datetime import datetime
-from pages import regions
+import regions
 import requests
 
 # Set the width of the Streamlit page
@@ -25,32 +25,63 @@ def create_edit_template(template_config={}):
 
     # Create a form to collect the template information
     template_name = st.text_input("Template Name", template_config.get("template_name", ""))
-    provider = st.selectbox("Provider", Providers)
+    # Create columns for better organization
+    col1, col2 = st.columns(2)
+
+    # Group related inputs into sections
+    col1.header("Provider Details")
+    provider = col1.selectbox("Provider", Providers)
 
     #for each provider selected, display a select box with the available regions
     if provider == "Azure":
         Regions = regions.azure_regions
     elif provider == "AWS":
         Regions = regions.aws_regions
-
     elif provider == "GCP":
         Regions = regions.gcp_regions
-    region = st.selectbox("Region", Regions)
 
+    
+    #for each provider selected, display a select box with the available instance types
+    if provider == "Azure":
+        instances = regions.azure_instance_types
+    elif provider == "AWS":
+        instances = regions.aws_instance_types
+    elif provider == "GCP":
+        instances = regions.gcp_instance_types
+    
 
-    resource_group = st.text_input("Resource Group")
-    vnet = st.text_input("VNet")
-    subnet = st.text_input("Subnet")
-    security_group = st.text_input("Security Group")
-    instance_type = st.text_input("Instance Type")
-    instance_count = st.text_input("Instance Count")
-    storage_account = st.text_input("Storage Account" )
-    database_name = st.text_input("Database Name")
-    database_type = st.text_input("Database Type")
-    database_size = st.text_input("Database Size")
-    database_count = st.text_input("Database Count")
+    #for each provider selected, display a select box with the available database types
+    if provider == "Azure":
+        Database_Types = regions.azure_database_types
+    elif provider == "AWS":
+        Database_Types = regions.aws_database_types
+    elif provider == "GCP":
+        Database_Types = regions.gcp_database_types
+
+    st.write("##")
+
+    region = col1.selectbox("Region", Regions)
+
+    col1.header("Resource Details")
+    resource_group = col1.text_input("Resource Group")
+    vnet = col1.text_input("VNet")
+    subnet = col1.text_input("Subnet")
+    security_group = col1.text_input("Security Group")
+
+    col2.header("Instance Details")
+    instance_type = col2.selectbox("Instance Type", instances)
+    instance_count = col2.number_input("Instance Count", min_value=1, value=1, step=1)
+
+    col2.header("Storage Details")
+    storage_account = col2.text_input("Storage Account")
+
+    col2.header("Database Details")
+    database_name = col2.text_input("Database Name")
+    database_type = col2.selectbox("Database Type", Database_Types)
+    database_size = col2.text_input("Database Size")
+    database_count = col2.number_input("Database Count", min_value=1, value=1, step=1)
+
     submit = st.button("Submit")
-
     # If the user clicks the submit button, save the template information
     if submit:
         template_config = {

@@ -57,3 +57,33 @@ gcp_regions = [
     "Tokyo (asia-northeast1)", "Osaka (asia-northeast2)", "Sydney (australia-southeast1)",
     "Melbourne (australia-southeast2)"
 ]
+azure_instance_types = [
+    "A-Series", "Av2 Standard", "Bs-Series", "D-Series", "Dv3", "Dv4", "Ddv4",
+    "Dv5", "Ddv5", "Dasv5", "Dadsv5", "DCasv5", "DCadsv5", "DCesv5", "DCedsv5",
+    "E-Series", "F-Series", "G-Series", "H-Series", "Ls-Series"
+]
+
+gcp_instance_types = [
+    "A2", "G2", "C2", "C2D", "H3", "M1", "M2", "M3", "C3", "C3D", "E2", "N1",
+    "N2", "N2D", "T2D", "T2A"
+]
+
+aws_instance_types = [
+    "General-Purpose Instances", "Compute-Optimized Instances",
+    "Memory-Optimized Instances", "Storage Optimized Instances",
+    "Accelerated Computing Instances"
+]
+
+azure_database_types = [
+    "Azure Cosmos DB", "Azure SQL Database", "Azure Database for PostgreSQL",
+    "Azure Database for MySQL", "Azure Database for MariaDB"
+]
+
+aws_database_types = [
+    "Amazon RDS", "Amazon Aurora", "Amazon Redshift", "Amazon DynamoDB",
+    "Amazon DocumentDB"
+]
+
+gcp_database_types = [
+    "Cloud SQL", "Bigtable", "Firestore", "Spanner", "Memorystore"
+]
