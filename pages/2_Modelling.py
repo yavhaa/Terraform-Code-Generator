@@ -58,7 +58,8 @@ def create_edit_template(template_config={}):
     elif provider == "GCP":
         Database_Types = regions.gcp_database_types
 
-    st.write("##")
+    
+    
 
     region = col1.selectbox("Region", Regions)
 
