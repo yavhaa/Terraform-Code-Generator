@@ -3,10 +3,12 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from openai import OpenAI
+from dotenv import load_dotenv, find_dotenv
 import prompts
 
 # OpenAI API
-client = OpenAI(api_key="")
+_ = load_dotenv(find_dotenv())
+client = OpenAI(api_key="<API_KEY")
 model = "gpt-3.5-turbo"
 temeperature = 0.4
 max_tokens = 1

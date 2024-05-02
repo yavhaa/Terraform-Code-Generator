@@ -29,6 +29,7 @@ def create_edit_template(template_config={}):
     col1, col2 = st.columns(2)
 
     # Group related inputs into sections
+    col1.markdown("&nbsp;")
     col1.header("Provider Details")
     provider = col1.selectbox("Provider", Providers)
 
@@ -59,9 +60,14 @@ def create_edit_template(template_config={}):
         Database_Types = regions.gcp_database_types
 
     
-    
+    col1.markdown("&nbsp;")
+    col1.markdown("&nbsp;")
+    col1.markdown("&nbsp;")
 
     region = col1.selectbox("Region", Regions)
+    col1.markdown("&nbsp;")
+    col1.markdown("&nbsp;")
+    col1.markdown("&nbsp;")
 
     col1.header("Resource Details")
     resource_group = col1.text_input("Resource Group")
@@ -69,9 +75,17 @@ def create_edit_template(template_config={}):
     subnet = col1.text_input("Subnet")
     security_group = col1.text_input("Security Group")
 
+    col2.markdown("&nbsp;")
+
     col2.header("Instance Details")
     instance_type = col2.selectbox("Instance Type", instances)
+    col2.markdown("&nbsp;")
+    col2.markdown("&nbsp;")
+    col2.markdown("&nbsp;") 
     instance_count = col2.number_input("Instance Count", min_value=1, value=1, step=1)
+    col2.markdown("&nbsp;")
+    col2.markdown("&nbsp;")
+    col2.markdown("&nbsp;")
 
     col2.header("Storage Details")
     storage_account = col2.text_input("Storage Account")
@@ -81,6 +95,8 @@ def create_edit_template(template_config={}):
     database_type = col2.selectbox("Database Type", Database_Types)
     database_size = col2.text_input("Database Size")
     database_count = col2.number_input("Database Count", min_value=1, value=1, step=1)
+
+    
 
     submit = st.button("Submit")
     # If the user clicks the submit button, save the template information
@@ -101,7 +117,18 @@ def create_edit_template(template_config={}):
             "database_size": database_size,
             "database_count": database_count,
         }
-    
+
+       
+
+        # Print the prompt
+        print(prompt)
+
+        # Save the template information to a JSON file
+        with open("templates/template_config.json", "w") as f:
+            json.dump(template_config, f)
+        st.write("Template saved successfully!")
+
+
     return template_config
     
 # Sidebar with buttons
