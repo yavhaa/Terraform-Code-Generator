@@ -11,7 +11,7 @@ _ = load_dotenv(find_dotenv())
 client = OpenAI(api_key="<API_KEY")
 model = "gpt-3.5-turbo"
 temeperature = 0.4
-max_tokens = 1
+max_tokens = 200
 
 # prompts
 systeme_message = prompts.system_message
@@ -31,34 +31,7 @@ def get_code(prompt):
     return completion.choices[0].message.content
 
 
-#streamlit
-st.set_page_config(layout="wide")
-st.title('Terraform Code Generator')
 
-#split the screen into 3 columns, first column for the user input, second column for the chatbot response, and the third column for 2 dropdown lists containing the available providers and resources
-
-col1, col2, col3 = st.columns([2, 5, 3])
-
-#user input
-# Python
-with col2:
-    st.write("Chatbot Response:")
-with col1:
-    
-    user_input = st.text_area('Enter your terraform code here:',height=200)
-    if st.button('Generate Terraform Code'):
-        completion = get_code(user_input)
-        with col2:
-            st.write('Chatbot Response:')
-            st.code(completion, language='hcl')
-
-
-
-#dropdown lists
-
-with col3:
-    providers = st.selectbox('Select the provider:', ['aws', 'azure', 'google'])
-    resources = st.selectbox('Select the resource:', ['vpc', 'subnet', 'instance', 'bucket', 'database'])
 
 
 

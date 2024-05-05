@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 import regions
 import requests
+from hello import get_code
 
 # Set the width of the Streamlit page
 st.set_page_config(layout="wide")
@@ -72,8 +73,11 @@ def create_edit_template(template_config={}):
     col1.header("Resource Details")
     resource_group = col1.text_input("Resource Group")
     vnet = col1.text_input("VNet")
-    subnet = col1.text_input("Subnet")
+    CIDR = col1.text_input("CIDR")
+    subnet_name = col1.text_input("Subnet")
+    subnet_CIDR = col1.text_input("Subnet CIDR")
     security_group = col1.text_input("Security Group")
+
 
     col2.markdown("&nbsp;")
 
@@ -98,6 +102,8 @@ def create_edit_template(template_config={}):
 
     
 
+    
+
     submit = st.button("Submit")
     # If the user clicks the submit button, save the template information
     if submit:
@@ -107,7 +113,9 @@ def create_edit_template(template_config={}):
             "region": region,
             "resource_group": resource_group,
             "vnet": vnet,
-            "subnet": subnet,
+            "CIDR": CIDR,
+            "subnet_name": subnet_name,
+            "subnet_CIDR": subnet_CIDR,
             "security_group": security_group,
             "instance_type": instance_type,
             "instance_count": instance_count,
@@ -118,10 +126,63 @@ def create_edit_template(template_config={}):
             "database_count": database_count,
         }
 
+        # Create a prompt out of the template configuration
+        prompt=f''' Write a Terraform script to provision an infrastructure with the following configuration:
+
+1. Provider Configuration:
+   - Use the `{provider}` provider.
+   - Set the region to `{region}`.
+
+2. VPC Creation:
+   - Define a VPC named `{vnet}`.
+   - Assign the CIDR block `{CIDR}`.
+
+3. Subnet Creation:
+   - Create a subnet:
+     - Name: `{subnet_name}`.
+     - CIDR block: `{subnet_CIDR}`.
+     - Availability Zone: `{region}`.
+
+4. Internet Gateway Creation:
+   - Create an internet gateway named `{vnet}_igw`.
+   - Attach the internet gateway to the VPC.
+
+5. Route Table Creation:
+   - Define a route table named `{vnet}_route_table` associated with the VPC.
+   - Add a route to `0.0.0.0/0` via the internet gateway.
+
+6. Route Table Association:
+   - Associate the route table with the subnet.
+
+7. Security Group Creation:
+   - Create a security group named `{security_group}`.
+   - Allow inbound traffic on port 22 (SSH) from anywhere.
+   - Allow all outbound traffic.
+
+8. Instance Creation:
+   - Launch an instance named `{template_name}`.
+   - Use the `{instance_type}` instance type.
+   - Place the instance in `{subnet_name}`.
+   - Associate the instance with the `{security_group}` security group.
+   - Apply a tag with the key `Name` and the value `{template_name}`.
+
+9. Storage Account Creation:
+   - Create a storage account named `{storage_account}`.
+
+10. Database Creation:
+   - Create a `{database_type}` database named `{database_name}`.
+   - Set the size to `{database_size}`.
+   - Create `{database_count}` number of databases.
+
+Ensure proper dependencies and attribute references are used.'''
        
 
         # Print the prompt
         print(prompt)
+        response=get_code(prompt)
+        print(response)
+
+
 
         # Save the template information to a JSON file
         with open("templates/template_config.json", "w") as f:
