@@ -1,0 +1,1 @@
+{"template_name": "", "provider": "", "region": "", "resource_group": "", "vnet": "", "CIDR": "", "subnet_name": "", "subnet_CIDR": "", "security_group": "", "instance_type": "", "instance_count": 1, "storage_account": "", "database_name": "", "database_type": "", "database_size": "", "database_count": 1, "creation_time": "20240530194209"}

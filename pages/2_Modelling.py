@@ -33,7 +33,7 @@ def create_edit_template(template_config={}):
     # Group related inputs into sections
     col1.markdown("&nbsp;")
     col1.header("Provider Details")
-    provider = col1.selectbox("Provider", Providers)
+    provider = col1.selectbox("Provider", Providers)#, index=Providers.index(template_config.get("provider" if template_config.get("provider") in Providers else 0)))
 
     #for each provider selected, display a select box with the available regions
     if provider == "Azure":
@@ -66,24 +66,24 @@ def create_edit_template(template_config={}):
     col1.markdown("&nbsp;")
     col1.markdown("&nbsp;")
 
-    region = col1.selectbox("Region", Regions)
+    region = col1.selectbox("Region", Regions)#, index=Regions.index(template_config.get("region", "")))
     col1.markdown("&nbsp;")
     col1.markdown("&nbsp;")
     col1.markdown("&nbsp;")
 
     col1.header("Resource Details")
-    resource_group = col1.text_input("Resource Group")
-    vnet = col1.text_input("VNet")
-    CIDR = col1.text_input("CIDR")
-    subnet_name = col1.text_input("Subnet")
-    subnet_CIDR = col1.text_input("Subnet CIDR")
-    security_group = col1.text_input("Security Group")
+    resource_group = col1.text_input("Resource Group", template_config.get("resource_group", ""))
+    vnet = col1.text_input("VNet", template_config.get("vnet", ""))
+    CIDR = col1.text_input("CIDR", template_config.get("CIDR", ""))
+    subnet_name = col1.text_input("Subnet", template_config.get("subnet_name", ""))
+    subnet_CIDR = col1.text_input("Subnet CIDR", template_config.get("subnet_CIDR", ""))
+    security_group = col1.text_input("Security Group", template_config.get("security_group", ""))
 
 
     col2.markdown("&nbsp;")
 
     col2.header("Instance Details")
-    instance_type = col2.selectbox("Instance Type", instances)
+    instance_type = col2.selectbox("Instance Type", instances)#, index=instances.index(template_config.get("instance_type", "") if template_config.get("instance_type", "") in instances else 0))
     col2.markdown("&nbsp;")
     col2.markdown("&nbsp;")
     col2.markdown("&nbsp;") 
@@ -93,12 +93,12 @@ def create_edit_template(template_config={}):
     col2.markdown("&nbsp;")
 
     col2.header("Storage Details")
-    storage_account = col2.text_input("Storage Account")
+    storage_account = col2.text_input("Storage Account", template_config.get("storage_account", ""))
 
     col2.header("Database Details")
-    database_name = col2.text_input("Database Name")
-    database_type = col2.selectbox("Database Type", Database_Types)
-    database_size = col2.text_input("Database Size")
+    database_name = col2.text_input("Database Name", template_config.get("database_name", ""))
+    database_type = col2.selectbox("Database Type")#, Database_Types, index=Database_Types.index(template_config.get("database_type", "") if template_config.get("database_type", "") in Database_Types else 0))
+    database_size = col2.text_input("Database Size", template_config.get("database_size", ""))
     database_count = col2.number_input("Database Count", min_value=1, value=1, step=1)
 
 
@@ -114,8 +114,27 @@ def create_edit_template(template_config={}):
 
 
     ####
-
+    col2.markdown("&nbsp;")
+    col2.markdown("&nbsp;")
     if col2.button("Save template config"): 
+        template_config = {
+            "template_name": template_name,
+            "provider": provider,
+            "region": region,
+            "resource_group": resource_group,
+            "vnet": vnet,
+            "CIDR": CIDR,
+            "subnet_name": subnet_name,
+            "subnet_CIDR": subnet_CIDR,
+            "security_group": security_group,
+            "instance_type": instance_type,
+            "instance_count": instance_count,
+            "storage_account": storage_account,
+            "database_name": database_name,
+            "database_type": database_type,
+            "database_size": database_size,
+            "database_count": database_count,
+        }
         if template_name:
             current_time = datetime.now().strftime("%Y%m%d%H%M%S")  # Generate a timestamp
 
@@ -139,6 +158,27 @@ def create_edit_template(template_config={}):
         else:
             st.error("Template name is mondatory")
     ####
+    
+    if col2.button("show template config"):
+        template_config = {
+            "template_name": template_name,
+            "provider": provider,
+            "region": region,
+            "resource_group": resource_group,
+            "vnet": vnet,
+            "CIDR": CIDR,
+            "subnet_name": subnet_name,
+            "subnet_CIDR": subnet_CIDR,
+            "security_group": security_group,
+            "instance_type": instance_type,
+            "instance_count": instance_count,
+            "storage_account": storage_account,
+            "database_name": database_name,
+            "database_type": database_type,
+            "database_size": database_size,
+            "database_count": database_count,
+        }
+        st.json(template_config)
 
     
     
@@ -247,19 +287,10 @@ def list_available_templates(templates_path):
                 "Template Name": template_name,
                 "Provider": template_config.get("provider"),
                 "Region": template_config.get("region"),
-                "Resource Group": template_config.get("resource_group"),
-                "VNet": template_config.get("vnet"),
-                "CIDR": template_config.get("CIDR"),
-                "Subnet": template_config.get("subnet_name"),
-                "Subnet CIDR": template_config.get("subnet_CIDR"),
-                "Security Group": template_config.get("security_group"),
-                "Instance Type": template_config.get("instance_type"),
-                "Instance Count": template_config.get("instance_count"),
-                "Storage Account": template_config.get("storage_account"),
                 "Database Name": template_config.get("database_name"),
-                "Database Type": template_config.get("database_type"),
                 "Database Size": template_config.get("database_size"),
                 "Database Count": template_config.get("database_count"),
+                "Actions":"",
             })
         if template_data:
             template_data_temp = st.data_editor(template_data,   
@@ -321,7 +352,7 @@ if selected_action == "Create New Template":
 elif selected_action == "List Available Templates":
     list_available_templates(templates_path)
 
-create_edit_template()
+# create_edit_template()
 
 
     
