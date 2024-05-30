@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os 
 import json 
+from config import templates_path
 from datetime import datetime
 import regions
 import requests
@@ -100,11 +101,47 @@ def create_edit_template(template_config={}):
     database_size = col2.text_input("Database Size")
     database_count = col2.number_input("Database Count", min_value=1, value=1, step=1)
 
+
+
+
+    
+
     
 
     
 
     submit = st.button("Submit")
+
+
+    ####
+
+    if col2.button("Save template config"): 
+        if template_name:
+            current_time = datetime.now().strftime("%Y%m%d%H%M%S")  # Generate a timestamp
+
+            if template_config.get('creation_time'):
+                # Edit mode
+                full_name_template = f"{template_config.get('creation_time')}_{template_config.get('Template Name')}.json"  # Replace with your desired template name
+                template_config.update({'edit_time':current_time})
+            else: 
+                template_config.update({'creation_time':current_time})
+                full_name_template = f"{current_time}_{template_name}.json"  # Replace with your desired template name
+            template_path = os.path.join(templates_path, full_name_template)
+
+            # Check if the directory exists, if not, create it
+            os.makedirs(os.path.dirname(template_path), exist_ok=True)
+
+            # Save the JSON data to the specified path
+            with open(template_path, 'w') as f:
+                json.dump(template_config, f)
+
+            st.success(f"Template '{template_name}' saved successfully!")
+        else:
+            st.error("Template name is mondatory")
+    ####
+
+    
+    
     # If the user clicks the submit button, save the template information
     if submit:
         template_config = {
@@ -195,7 +232,95 @@ Ensure proper dependencies and attribute references are used.'''
 # Sidebar with buttons
 st.sidebar.title("Template Management")
 # Create a selectbox in the sidebar to choose an action
+
+def list_available_templates(templates_path):
+        template_files = [f for f in os.listdir(templates_path) if f.endswith(".json")]
+
+        template_data = []
+
+        for template_file in template_files:
+            with open(os.path.join(templates_path, template_file), 'r') as f:
+                template_config = json.load(f)
+            
+            template_name = template_file[:-5]  # Remove ".json" extension
+            template_data.append( {
+                "Template Name": template_name,
+                "Provider": template_config.get("provider"),
+                "Region": template_config.get("region"),
+                "Resource Group": template_config.get("resource_group"),
+                "VNet": template_config.get("vnet"),
+                "CIDR": template_config.get("CIDR"),
+                "Subnet": template_config.get("subnet_name"),
+                "Subnet CIDR": template_config.get("subnet_CIDR"),
+                "Security Group": template_config.get("security_group"),
+                "Instance Type": template_config.get("instance_type"),
+                "Instance Count": template_config.get("instance_count"),
+                "Storage Account": template_config.get("storage_account"),
+                "Database Name": template_config.get("database_name"),
+                "Database Type": template_config.get("database_type"),
+                "Database Size": template_config.get("database_size"),
+                "Database Count": template_config.get("database_count"),
+            })
+        if template_data:
+            template_data_temp = st.data_editor(template_data,   
+            column_config={
+            "Actions": st.column_config.SelectboxColumn(
+                "Actions",
+                help="The category of the app",
+                width="medium",
+                options=[
+                    "Edit",
+                    "Delete",
+                ],
+                required=False,
+            )},
+            )
+            element_with_edit = next((item for item in template_data_temp if item['Actions'] == 'Edit'), None)
+            if element_with_edit:
+                st.info("Edit {}".format(element_with_edit.get("Template Name")))
+                full_name_template = element_with_edit["Template Name"]
+
+                with open(os.path.join(templates_path, full_name_template)+".json", 'r') as f:
+                    template_config = json.load(f)
+
+                create_edit_template(template_config)
+            
+        else:
+            st.warning("No templates found in metadata/templates")
+
+
 selected_action = st.sidebar.selectbox("Select Action", ["Create New Template", "List Available Templates"])
+# Perform the selected action
+if selected_action == "Create New Template":
+    empty_template = {
+        "template_name": "",
+        "provider": "",
+        "region": "",
+        "resource_group": "",
+        "vnet": "",
+        "CIDR": "",
+        "subnet_name": "",
+        "subnet_CIDR": "",
+        "security_group": "",
+        "instance_type": "",
+        "instance_count": 1,
+        "storage_account": "",
+        "database_name": "",
+        "database_type": "",
+        "database_size": "",
+        "database_count": 1,
+    }
+    create_edit_template(empty_template)
+
+
+
+
+
+
+
+
+elif selected_action == "List Available Templates":
+    list_available_templates(templates_path)
 
 create_edit_template()
 
