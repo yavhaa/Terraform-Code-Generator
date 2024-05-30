@@ -33,7 +33,7 @@ def create_edit_template(template_config={}):
     # Group related inputs into sections
     col1.markdown("&nbsp;")
     col1.header("Provider Details")
-    provider = col1.selectbox("Provider", Providers)#, index=Providers.index(template_config.get("provider" if template_config.get("provider") in Providers else 0)))
+    provider = col1.selectbox("Provider", Providers, index=Providers.index(template_config.get("provider")))
 
     #for each provider selected, display a select box with the available regions
     if provider == "Azure":
@@ -97,7 +97,7 @@ def create_edit_template(template_config={}):
 
     col2.header("Database Details")
     database_name = col2.text_input("Database Name", template_config.get("database_name", ""))
-    database_type = col2.selectbox("Database Type")#, Database_Types, index=Database_Types.index(template_config.get("database_type", "") if template_config.get("database_type", "") in Database_Types else 0))
+    database_type = col2.selectbox("Database Type", Database_Types)#, index=Database_Types.index(template_config.get("database_type", "") if template_config.get("database_type", "") in Database_Types else 0))
     database_size = col2.text_input("Database Size", template_config.get("database_size", ""))
     database_count = col2.number_input("Database Count", min_value=1, value=1, step=1)
 
@@ -324,19 +324,19 @@ selected_action = st.sidebar.selectbox("Select Action", ["Create New Template", 
 if selected_action == "Create New Template":
     empty_template = {
         "template_name": "",
-        "provider": "",
-        "region": "",
+        "provider": "AWS",
+        "region": "US East (Ohio)",
         "resource_group": "",
         "vnet": "",
         "CIDR": "",
         "subnet_name": "",
         "subnet_CIDR": "",
         "security_group": "",
-        "instance_type": "",
+        "instance_type": "General-Purpose Instances",
         "instance_count": 1,
         "storage_account": "",
         "database_name": "",
-        "database_type": "",
+        "database_type": "Amazon RDS",
         "database_size": "",
         "database_count": 1,
     }
