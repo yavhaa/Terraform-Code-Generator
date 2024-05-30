@@ -288,7 +288,6 @@ def list_available_templates(templates_path):
         else:
             st.warning("No templates found in metadata/templates")
 
-
 selected_action = st.sidebar.selectbox("Select Action", ["Create New Template", "List Available Templates"])
 # Perform the selected action
 if selected_action == "Create New Template":
