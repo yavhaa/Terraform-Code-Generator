@@ -7,8 +7,8 @@ from dotenv import load_dotenv, find_dotenv
 import prompts
 
 # OpenAI API
-_ = load_dotenv(find_dotenv())
-api_key = 
+load_dotenv()  # take environment variables from .env.
+api_key = os.getenv("api_key")
 print(api_key)
 client = OpenAI(api_key=api_key)
 model = "gpt-3.5-turbo-instruct"
