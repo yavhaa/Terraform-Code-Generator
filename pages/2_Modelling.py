@@ -255,7 +255,7 @@ Ensure proper dependencies and attribute references are used.'''
        
 
         # Print the prompt
-        print(prompt)
+        # print(prompt)
         response=get_code(prompt)
         print(response)
 

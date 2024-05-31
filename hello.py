@@ -8,27 +8,42 @@ import prompts
 
 # OpenAI API
 _ = load_dotenv(find_dotenv())
-client = OpenAI(api_key="<API_KEY")
-model = "gpt-3.5-turbo"
+api_key = 
+print(api_key)
+client = OpenAI(api_key=api_key)
+model = "gpt-3.5-turbo-instruct"
 temeperature = 0.4
 max_tokens = 200
 
-# prompts
-systeme_message = prompts.system_message
-prompt = prompts.generate_prompt("generate terraform code")
 
 
 def get_code(prompt):
-    completion = client.chat.completions.create(
+    response=client.completions.create(
         model=model,
-        messages=[
-            {"role": "system", "content": systeme_message},
-            {"role": "user", "content": prompt},
-        ],
+        prompt=prompt,
         temperature=temeperature,
         max_tokens=max_tokens,
     )
-    return completion.choices[0].message.content
+    return response.choices[0].text
+
+    
+
+# prompts
+# systeme_message = prompts.system_message
+# prompt = prompts.generate_prompt("generate terraform code")
+
+
+# def get_code(prompt):
+#     completion = client.chat.completions.create(
+#         model=model,
+#         messages=[
+#             {"role": "system", "content": systeme_message},
+#             {"role": "user", "content": prompt},
+#         ],
+#         temperature=temeperature,
+#         max_tokens=max_tokens,
+#     )
+#     return completion.choices[0].message.content
 
 
 
