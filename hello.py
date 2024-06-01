@@ -12,7 +12,7 @@ api_key = os.getenv("api_key")
 print(api_key)
 client = OpenAI(api_key=api_key)
 model = "gpt-3.5-turbo-instruct"
-temeperature = 0.4
+temeperature = 0.2
 max_tokens = 200
 
 

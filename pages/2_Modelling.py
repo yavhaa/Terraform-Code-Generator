@@ -205,7 +205,6 @@ def create_edit_template(template_config={}):
 
         # Create a prompt out of the template configuration
         prompt=f''' Write a Terraform script to provision an infrastructure with the following configuration:
-
 1. Provider Configuration:
    - Use the `{provider}` provider.
    - Set the region to `{region}`.
@@ -252,10 +251,9 @@ def create_edit_template(template_config={}):
    - Create `{database_count}` number of databases.
 
 Ensure proper dependencies and attribute references are used.'''
-       
+       #Here add few-shot learning to the prompt
 
-        # Print the prompt
-        # print(prompt)
+
         response=get_code(prompt)
         print(response)
 
