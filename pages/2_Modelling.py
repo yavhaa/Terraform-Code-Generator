@@ -256,6 +256,16 @@ Ensure proper dependencies and attribute references are used.'''
 
         response=get_code(prompt)
         print(response)
+        st.write(response)
+        
+        #create a terraform file under the terraform scripts folder and save the response in it, the name of the file is the date and time of the execution
+        with open(f"terraform_scripts/{datetime.now().strftime('%Y%m%d%H%M%S')}.tf", "w") as f:
+            f.write(response)
+
+        
+
+
+
 
 
 

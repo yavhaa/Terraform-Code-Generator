@@ -13,8 +13,8 @@ print(api_key)
 client = OpenAI(api_key=api_key)
 model = "gpt-3.5-turbo-instruct"
 temeperature = 0.2
-max_tokens = 200
-
+#adjust this before each run if needed
+max_tokens = 500
 
 
 def get_code(prompt):
