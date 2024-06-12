@@ -204,7 +204,7 @@ def create_edit_template(template_config={}):
         }
 
         # Create a prompt out of the template configuration
-        prompt=f''' Write a Terraform script to provision an infrastructure with the following configuration:
+        prompt=f''' Write a Terraform script for this configuration and estimate the cost of this infrastructure in 1 year:
 1. Provider Configuration:
    - Use the `{provider}` provider.
    - Set the region to `{region}`.

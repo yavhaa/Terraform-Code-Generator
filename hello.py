@@ -9,22 +9,21 @@ import prompts
 # OpenAI API
 load_dotenv()  # take environment variables from .env.
 api_key = os.getenv("api_key")
-print(api_key)
 client = OpenAI(api_key=api_key)
-model = "gpt-3.5-turbo-instruct"
-temeperature = 0.2
+model = "gpt-4-turbo"
+temeperature = 0.4
 #adjust this before each run if needed
 max_tokens = 500
 
 
-def get_code(prompt):
-    response=client.completions.create(
-        model=model,
-        prompt=prompt,
-        temperature=temeperature,
-        max_tokens=max_tokens,
-    )
-    return response.choices[0].text
+# def get_code(prompt):
+#     response=client.completions.create(
+#         model=model,
+#         prompt=prompt,
+#         temperature=temeperature,
+#         max_tokens=max_tokens,
+#     )
+#     return response.choices[0].text
 
     
 
@@ -33,17 +32,17 @@ def get_code(prompt):
 # prompt = prompts.generate_prompt("generate terraform code")
 
 
-# def get_code(prompt):
-#     completion = client.chat.completions.create(
-#         model=model,
-#         messages=[
-#             {"role": "system", "content": systeme_message},
-#             {"role": "user", "content": prompt},
-#         ],
-#         temperature=temeperature,
-#         max_tokens=max_tokens,
-#     )
-#     return completion.choices[0].message.content
+def get_code(prompt):
+    completion = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "you are a Terraform code generator, and you estimate the costs of cloud infrastructure. You generate consize code and estimation"},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=temeperature,
+        max_tokens=max_tokens,
+    )
+    return completion.choices[0].message.content
 
 
 
