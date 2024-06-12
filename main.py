@@ -14,7 +14,7 @@ def run():
 
     st.markdown(
         """
-        This tool will help you generate Terraform code effortlessly, and estimate your infrastructure costs ! 🚀
+        This tool will help you generate Terraform code effortlessly, and estimate your infrastructure costs ! 🚀m
     """
     )
 
